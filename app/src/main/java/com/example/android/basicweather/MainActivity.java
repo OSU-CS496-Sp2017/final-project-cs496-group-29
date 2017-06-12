@@ -5,8 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -17,8 +15,8 @@ public class MainActivity extends AppCompatActivity {
     /*Recycle View*/
     public RecyclerView rv;
     private LinearLayoutManager lm;
-    private WeatherAdapter adapter;
-    private ArrayList<Weather> display = new ArrayList<Weather>();
+    private RecyclerAdapter adapter;
+    private ArrayList<String> display = new ArrayList<String>();
 
     private int d;
 
@@ -30,19 +28,19 @@ public class MainActivity extends AppCompatActivity {
        lm = new LinearLayoutManager(context);
         recycle_manage();
       //  create_list();
-        set_weather_list();
-        adapter = new WeatherAdapter(context,display);
+        set_dummy_list();
+        adapter = new RecyclerAdapter(context,display);
         rv.setAdapter(adapter);
     }
 
-    private void set_weather_list(){
+    private void set_dummy_list(){
         d = 0;
         for(int i = 0; i < 30; i++){
             if(d > 6){
                 d = 0;
             }
-            Weather w_temp = new Weather(d,i);
-            display.add(w_temp);
+
+            display.add("Beer");
             d++;
         }
 
