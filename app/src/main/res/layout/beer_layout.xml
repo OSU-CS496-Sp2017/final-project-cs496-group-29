@@ -14,17 +14,9 @@
         android:gravity="center"
         android:onClick="weather_clicked"
         android:clickable="true"
-        android:layout_toLeftOf="@+id/detail_weather"
-        />
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/detail_weather"
-        android:text="Details"
-        android:minHeight="10dp"
-        android:minWidth="10dp"
 
         />
+
 
 
 </LinearLayout>
