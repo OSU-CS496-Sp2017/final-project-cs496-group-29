@@ -27,7 +27,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     Context con;
     private ArrayList<String> beer_data = new ArrayList<String>();
 
-
+    public void update(ArrayList<String> beer_updated) {
+        beer_data = beer_updated;
+        notifyDataSetChanged();
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         private TextView t;
@@ -55,6 +58,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         beer_data = w;
     }
 
+
+
     @Override
     public RecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
@@ -71,7 +76,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @Override
     public void onBindViewHolder(RecyclerAdapter.ViewHolder viewHolder, int i){
         final int extra_i = i;
-        viewHolder.t.setText("Beer");
+        viewHolder.t.setText(beer_data.get(i));
 
 
 
