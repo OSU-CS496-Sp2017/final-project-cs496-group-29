@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private LinearLayoutManager lm;
     private RecyclerAdapter adapter;
     private ProgressBar mLoadingIndicatorPB;
-    private ArrayList<String> beer = new ArrayList<String>();
+    private ArrayList<Beer> beer = new ArrayList<Beer>();
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private int d;
@@ -185,7 +185,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             JSONObject j = new JSONObject(b);
             JSONArray data = j.getJSONArray("data");
             for(int i = 0; i < 45; i++){
-                String d,w,name;
+                String name ="";
+                String createDate = "";
+                String categoryName ="";
+                String description = "";
                 double t;
 
                 JSONObject c = data.getJSONObject(i);
@@ -194,8 +197,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
               //  JSONObject forecast = weath.getJSONObject(0);
 
                 name = c.getString("name");
+                createDate = c.getString("createDate");
+                categoryName = c.getString("name");
+               // name = c.getString("name");
+
                 System.out.println(name);
-                beer.add(name);
+                Beer be = new Beer(name,createDate,categoryName,description);
+                beer.add(be);
                // d = c.getString("dt_txt");
                // t = main.getDouble("temp");
                // w = forecast.getString("main");

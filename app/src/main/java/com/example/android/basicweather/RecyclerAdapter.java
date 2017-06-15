@@ -28,10 +28,11 @@ import java.util.ArrayList;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
     Context con;
-    private ArrayList<String> beer_data = new ArrayList<String>();
+    private ArrayList<Beer> beer_data = new ArrayList<Beer>();
+    private ArrayList<Beer> itemsCopy = new ArrayList<Beer>();
     private LinearLayout linear_holder;
 
-    public void update(ArrayList<String> beer_updated) {
+    public void update(ArrayList<Beer> beer_updated) {
         beer_data = beer_updated;
         notifyDataSetChanged();
     }
@@ -58,9 +59,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     /*Constructor handles data RecyclerView displays*/
-    public RecyclerAdapter(Context context, ArrayList<String> w){
+    public RecyclerAdapter(Context context, ArrayList<Beer> w){
         this.con = context;
         beer_data = w;
+        itemsCopy.addAll(beer_data);
     }
 
 
@@ -81,8 +83,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @Override
     public void onBindViewHolder(RecyclerAdapter.ViewHolder viewHolder, int i){
         final int extra_i = i;
+        final Beer beer_current = beer_data.get(i);
 
-        viewHolder.t.setText(beer_data.get(i));
+        viewHolder.t.setText(beer_data.get(i).get_name());
 
         viewHolder.b.setOnClickListener(new View.OnClickListener() {
 
@@ -90,6 +93,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(),BeerDetailed.class);
+
+                intent.putExtra("1",beer_current.get_name());
+                intent.putExtra("2",beer_current.get_createDate());
+                intent.putExtra("3",beer_current.get_categoryName());
+                intent.putExtra("4",beer_current.get_description());
 
                 v.getContext().startActivity(intent);
             }
@@ -111,7 +119,20 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-
+    public void filter(String text) {
+        beer_data.clear();
+        if(text.isEmpty()){
+            beer_data.addAll(itemsCopy);
+        } else{
+            text = text.toLowerCase();
+            for(int i = 0; i < beer_data.size(); i++){
+                if(itemsCopy.get(i).get_name().toLowerCase().contains(text) || itemsCopy.get(i).get_name().toLowerCase().contains(text)){
+                    beer_data.add(itemsCopy.get(i));
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
 
 
 }
