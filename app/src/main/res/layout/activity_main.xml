@@ -17,12 +17,20 @@
         android:padding="12dp">
 
         <TextView
+			android:id="@+id/tv_intro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/results"
             android:textColor="#fff"
-            android:textSize="42sp" />
-
+            android:textSize="20sp" />
+			
+		<TextView
+            android:id="@+id/tv_order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:textColor="#fff"
+            android:textSize="30sp" />
+			
     </LinearLayout>
 
     <FrameLayout

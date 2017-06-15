@@ -1,13 +1,19 @@
 <resources>
     <string name="app_name">CS 496 Brewery Database</string>
-	<string name ="results">Results</string>
+	<string name ="results">Ordered by: </string>
     <string name="loading_error_message">Woops.  We couldn\'t cload your information.  Check your internet connection and try again.</string>
     <string name="action_settings">Settings</string>
 	
 	<string name="pref_order_key">pref_order</string>
-	<string name="pref_order_title">Order</string>
+	<string name="pref_order_title">Order by</string>
 	<string name="pref_order_default">name</string>
+	<string name="pref_order_default_title">Name</string>
+	
+	<string name="pref_sort_key">pref_sort</string>
+	<string name="pref_sort_title">Sort by</string>
+	<string name="pref_sort_default">ASC</string>
 	
 	<string name="pref_search_key">pref_search</string>
 	<string name="pref_search_title">Search</string>
+	<string name="pref_search_default"></string>
 </resources>

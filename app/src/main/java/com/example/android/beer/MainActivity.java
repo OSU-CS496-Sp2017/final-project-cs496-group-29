@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements BrewAdapter.OnBre
     private static final int BREW_LOADER_ID = 0;
 
     /*Recycle View*/
+	private TextView mBrewOrderTV, mBrewIntroTV;
     private RecyclerView mBrewItemsRV;
     private ProgressBar mLoadingIndicatorPB;
     private TextView mLoadingErrorMessageTV;
@@ -40,23 +42,35 @@ public class MainActivity extends AppCompatActivity implements BrewAdapter.OnBre
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+		
+		getSupportActionBar().setElevation(0);
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+		String order = sharedPreferences.getString(getString(R.string.pref_order_key), getString(R.string.pref_order_default));
+		String sort = sharedPreferences.getString(getString(R.string.pref_sort_key), getString(R.string.pref_sort_default));
+		String search = sharedPreferences.getString(getString(R.string.pref_search_key), getString(R.string.pref_search_default));
+		
+		mBrewIntroTV = (TextView)findViewById(R.id.tv_intro);
+		mBrewOrderTV = (TextView)findViewById(R.id.tv_order);		
         mLoadingIndicatorPB = (ProgressBar)findViewById(R.id.pb_loading_indicator);
         mLoadingErrorMessageTV = (TextView)findViewById(R.id.tv_loading_error_message);
         mBrewItemsRV = (RecyclerView)findViewById(R.id.rv_beer_items);
 
+		
+		if(!search.isEmpty()) {
+			mBrewIntroTV.setText("Showing Beer search results:");
+			mBrewOrderTV.setText(search);
+		} else {
+			mBrewIntroTV.setText("Beers ordered by:");
+			mBrewOrderTV.setText(order);
+		}
         mBrewAdapter = new BrewAdapter(this);
         mBrewItemsRV.setAdapter(mBrewAdapter);
         mBrewItemsRV.setLayoutManager(new LinearLayoutManager(this));
         mBrewItemsRV.setHasFixedSize(true);
 
-		String brewUrl = BeerUtils.buildBrewURL();
-        Bundle argsBundle = new Bundle();
-        argsBundle.putString(BREW_URL_KEY, brewUrl);
-
-        getSupportLoaderManager().initLoader(BREW_LOADER_ID, argsBundle, this);
-        //adapter.update(beer);
-
+        getSupportLoaderManager().initLoader(BREW_LOADER_ID, null, this);
+		
+		doBrewerySearch();
     }
 
 	@Override
@@ -86,6 +100,29 @@ public class MainActivity extends AppCompatActivity implements BrewAdapter.OnBre
         }
     }
 	
+	private void doBrewerySearch() {
+		String brewUrl;
+		
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+		String order = sharedPreferences.getString(getString(R.string.pref_order_key), getString(R.string.pref_order_default));
+		String sort = sharedPreferences.getString(getString(R.string.pref_sort_key), getString(R.string.pref_sort_default));
+		String search = sharedPreferences.getString(getString(R.string.pref_search_key), getString(R.string.pref_search_default));
+		
+		if(!search.isEmpty()) {
+			mBrewIntroTV.setText("Showing Beer search results:");
+			mBrewOrderTV.setText(search);
+			brewUrl = BeerUtils.newbuildBrewURL(search);
+		} else { 
+			mBrewIntroTV.setText("Beers ordered by:");
+			mBrewOrderTV.setText(order);
+			brewUrl = BeerUtils.buildBrewURL(order, sort);
+		}
+		
+		Bundle argsBundle = new Bundle();
+        argsBundle.putString(BREW_URL_KEY, brewUrl);
+		getSupportLoaderManager().restartLoader(BREW_LOADER_ID, argsBundle, this);
+	}	
+	
     @Override
     public Loader<String> onCreateLoader(int id, final Bundle args) {
         return new AsyncTaskLoader<String>(this) {
@@ -95,8 +132,8 @@ public class MainActivity extends AppCompatActivity implements BrewAdapter.OnBre
             @Override
             protected void onStartLoading() {
                 if (mBrewJSON != null) {
-                    Log.d(TAG, "AsyncTaskLoader delivering cached forecast");
-					//doWeatherSearch();
+                    Log.d(TAG, "AsyncTaskLoader delivering cached beer");
+					doBrewerySearch();
                     deliverResult(mBrewJSON);
                 } else {
                     mLoadingIndicatorPB.setVisibility(View.VISIBLE);
@@ -110,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements BrewAdapter.OnBre
                 if (brewUrl == null || brewUrl.equals("")) {
                     return null;
                 }
+				
                 Log.d(TAG, "AsyncTaskLoader loading beers from url: " + brewUrl);
 
                 String brewJSON = null;
@@ -134,8 +172,7 @@ public class MainActivity extends AppCompatActivity implements BrewAdapter.OnBre
         Log.d(TAG, "AsyncTaskLoader load finished");
         mLoadingIndicatorPB.setVisibility(View.INVISIBLE);
         if (brewJSON != null) {
-			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
+			
             mLoadingErrorMessageTV.setVisibility(View.INVISIBLE);
             mBrewItemsRV.setVisibility(View.VISIBLE);
             ArrayList<BeerUtils.BrewItem> brewItems = BeerUtils.parseBrewJSON(brewJSON);
