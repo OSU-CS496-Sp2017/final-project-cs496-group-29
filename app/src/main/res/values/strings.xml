@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Brewery Application</string>
     <string name="title_activity_beer_detailed">BeerDetailed</string>
+
+    <color name="green">#3CB371</color>
+    <color name="white">#FFFFFF</color>
+    <color name="red">#FF6666</color>
+    <color name="teal">#008080</color>
+
 </resources>

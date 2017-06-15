@@ -62,7 +62,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     public RecyclerAdapter(Context context, ArrayList<Beer> w){
         this.con = context;
         beer_data = w;
-        itemsCopy.addAll(beer_data);
+        itemsCopy = beer_data;
     }
 
 
@@ -126,9 +126,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         } else{
             text = text.toLowerCase();
             for(int i = 0; i < beer_data.size(); i++){
-                if(itemsCopy.get(i).get_name().toLowerCase().contains(text) || itemsCopy.get(i).get_name().toLowerCase().contains(text)){
+               // if(itemsCopy.get(i).get_name().toLowerCase().contains(text)){
                     beer_data.add(itemsCopy.get(i));
-                }
+               // }
             }
         }
         notifyDataSetChanged();

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+
+    <PreferenceCategory
+        android:title="Background Colors">
+        <ListPreference
+            android:key="PREF_LIST"
+            android:title="Background Colors"
+            android:summary="%s"
+            android:entries="@array/color_entries"
+            android:entryValues="@array/color_values" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
+
+
+    <!--Sourcest-->
+
+    <!--http://www.edumobile.org/android/listpreference-example/t-->
