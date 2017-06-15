@@ -17,6 +17,16 @@
 
         />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/detail_beer"
+        android:text="Details"
+        android:minHeight="10dp"
+        android:minWidth="10dp"
+
+        />
+
 
 
 </LinearLayout>
