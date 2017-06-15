@@ -28,8 +28,8 @@ public class BeerUtils {
         public static final String EXTRA_BEER_ITEM = "com.example.android.beer.utils.BrewItem.SearchResult";
         public String name;
 		public Date createDate;
-        public String descriptions;
-        public String categoryName;
+        //public String descript;
+        //public String categoryName;
     }
 	
 	public static String buildBrewURL(String order, String sort) {
@@ -61,19 +61,18 @@ public class BeerUtils {
                 JSONObject brewListElem = brewList.getJSONObject(i);
 
 				brewItem.name = brewListElem.getString("name");
-				//brewItem.descriptions = brewListElem.getString("description");
-				
-				//String dateStr = brewListElem.getString("createDate");
-				//SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				//Date cDate = sdf.parse(dateStr);
-				//brewItem.createDate = cDate;
-
-                //brewItem.categoryName = brewListElem.getJSONArray("style").getString("shortName");
+				String dateStr = brewListElem.getString("createDate");
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				Date cDate = sdf.parse(dateStr);
+				brewItem.createDate = cDate;
 
                 brewItemsList.add(brewItem);
             }
             return brewItemsList;
         } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        } catch (ParseException e) {
             e.printStackTrace();
             return null;
         }
